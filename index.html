@@ -6,13 +6,23 @@
   <title>West Heaton Poker League 2026</title>
   <link rel="stylesheet" href="https://galax.xyz/TELETEXT/TELETEXT.CSS">
   <style>
-    /* Fluid font: sizes for ~42 monospace chars in the content area.
-       Mode7 chars are ~0.6× as wide as tall, so content_width / (42 × 0.6) = content_width / 25.2.
-       Capped at 20px on wider screens, floored at 10px for tiny screens. */
+    html, body { overflow-x: hidden; }
+
+    /* Mode7 chars are ~0.75× as wide as tall.
+       36 chars × 0.75 = 27 → divide content width by 27 to fit the longest header row.
+       Caps at 20px once the viewport is wide enough. */
     body {
-      padding: 20px;
-      font-size: clamp(10px, calc((100vw - 40px) / 25.2), 20px);
-      line-height: clamp(10px, calc((100vw - 40px) / 25.2), 20px);
+      padding: 0;
+      font-size: clamp(10px, calc((100vw - 40px) / 27), 20px);
+      line-height: clamp(10px, calc((100vw - 40px) / 27), 20px);
+    }
+
+    /* Centred column: desktop gets margins, mobile gets full width */
+    .wrap {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 0 20px;
+      box-sizing: border-box;
       overflow-x: hidden;
     }
 
@@ -46,15 +56,17 @@
     .tt-table th { text-align: left; color: #fff; padding-bottom: 2px; }
     .r  { text-align: right; }
 
-    /* Monthly table — fixed cols for FINISH/BUBBLE/PTS, PLAYER fills rest */
-    .mt .c-fin  { width:  6ch; }
-    .mt .c-bdg  { width:  7ch; }
-    .mt .c-pts  { width:  4ch; }
+    /* Monthly table: percentage widths, immune to font-metric uncertainty */
+    .mt .c-fin { width: 14%; }
+    .mt .c-bdg { width: 16%; }
+    .mt .c-pts { width: 10%; }
+    /* PLAYER gets the remaining 60% */
 
-    /* Standings table — fixed cols for POS/months/total, PLAYER fills rest */
-    .st .c-pos  { width:  4ch; }
-    .st .c-mo   { width:  5ch; }
-    .st .c-tot  { width:  6ch; }
+    /* Standings table: percentage widths */
+    .st .c-pos { width:  8%; }
+    .st .c-mo  { width: 12%; }
+    .st .c-tot { width: 16%; }
+    /* PLAYER gets 100 - 8 - 36 - 16 = 40% */
 
     /* Pages */
     .page { display: none; }
@@ -77,6 +89,7 @@
   </style>
 </head>
 <body>
+<div class="wrap">
 
 <!-- ═══════════════════ STANDINGS ═══════════════════ -->
 <div id="standings" class="page active">
@@ -212,7 +225,7 @@
   <a class="nav-btn greenbg"  onclick="show('may')">MAY</a>
   <a class="nav-btn yellowbg" onclick="show('june')">JUNE</a>
   <a class="nav-btn cyanbg"   onclick="show('july')">JULY</a>
-</div>
+</div><!-- /.wrap -->
 
 <script>
 function show(id) {
@@ -234,8 +247,13 @@ function drawPoker() {
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
 
-  const availW = canvas.parentElement.clientWidth;
+  // Reset to 0 first so the canvas doesn't inflate parentElement.clientWidth
+  canvas.width = 0;
   const COLS = 29, ROWS = 7;
+  const availW = Math.min(
+    canvas.parentElement.clientWidth,
+    document.documentElement.clientWidth - 40
+  );
   const CELL = Math.max(5, Math.floor(availW / COLS));
   const GAP  = Math.max(1, Math.round(CELL * 0.15));
   const DOT  = CELL - GAP;
@@ -262,8 +280,10 @@ function drawPoker() {
   });
 }
 
-drawPoker();
-window.addEventListener('resize', drawPoker);
+document.fonts.ready.then(() => {
+  drawPoker();
+  window.addEventListener('resize', drawPoker);
+});
 </script>
 </body>
 </html>
