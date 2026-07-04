@@ -6,14 +6,22 @@
   <title>West Heaton Poker League 2026</title>
   <link rel="stylesheet" href="https://galax.xyz/TELETEXT/TELETEXT.CSS">
   <style>
-    body { padding: 20px; }
+    /* Fluid font: sizes for ~42 monospace chars in the content area.
+       Mode7 chars are ~0.6× as wide as tall, so content_width / (42 × 0.6) = content_width / 25.2.
+       Capped at 20px on wider screens, floored at 10px for tiny screens. */
+    body {
+      padding: 20px;
+      font-size: clamp(10px, calc((100vw - 40px) / 25.2), 20px);
+      line-height: clamp(10px, calc((100vw - 40px) / 25.2), 20px);
+      overflow-x: hidden;
+    }
 
     .tt {
       display: block;
       white-space: pre;
       font-family: Mode7, monospace;
-      font-size: 20px;
-      line-height: 20px;
+      font-size: inherit;
+      line-height: inherit;
       font-smooth: never;
       -webkit-font-smoothing: none;
     }
@@ -22,32 +30,29 @@
     .tt-table {
       border-collapse: collapse;
       font-family: Mode7, monospace;
-      font-size: 20px;
-      line-height: 20px;
+      font-size: inherit;
+      line-height: inherit;
       table-layout: fixed;
+      width: 100%;
       font-smooth: never;
       -webkit-font-smoothing: none;
     }
     .tt-table td, .tt-table th {
       padding: 0;
-      line-height: 20px;
+      line-height: inherit;
     }
     .tt-table thead tr { border-bottom: 2px solid #ffff00; }
     .tt-table tfoot tr { border-top:    2px solid #ffff00; }
     .tt-table th { text-align: left; color: #fff; padding-bottom: 2px; }
     .r  { text-align: right; }
 
-    /* Monthly table column widths */
-    .mt { width: 52ch; }          /* overall table */
-    .mt .c-fin  { width:  8ch; }
-    .mt .c-name { width: 22ch; }
-    .mt .c-bdg  { width:  8ch; }
+    /* Monthly table — fixed cols for FINISH/BUBBLE/PTS, PLAYER fills rest */
+    .mt .c-fin  { width:  6ch; }
+    .mt .c-bdg  { width:  7ch; }
     .mt .c-pts  { width:  4ch; }
 
-    /* Standings table column widths */
-    .st { width: 44ch; }
+    /* Standings table — fixed cols for POS/months/total, PLAYER fills rest */
     .st .c-pos  { width:  4ch; }
-    .st .c-name { width: 16ch; }
     .st .c-mo   { width:  5ch; }
     .st .c-tot  { width:  6ch; }
 
@@ -59,8 +64,8 @@
     .nav { display: flex; margin-top: 2px; }
     .nav-btn {
       font-family: Mode7, monospace;
-      font-size: 20px;
-      line-height: 20px;
+      font-size: inherit;
+      line-height: inherit;
       flex: 1;
       text-align: center;
       cursor: pointer;
@@ -81,7 +86,7 @@
 <span class="tt"> </span>
 <table class="tt-table st">
   <colgroup>
-    <col class="c-pos"><col class="c-name">
+    <col class="c-pos"><col>
     <col class="c-mo"><col class="c-mo"><col class="c-mo"><col class="c-tot">
   </colgroup>
   <thead>
@@ -122,7 +127,7 @@
 <span class="tt"> </span>
 <table class="tt-table mt">
   <colgroup>
-    <col class="c-fin"><col class="c-name"><col class="c-bdg"><col class="c-pts">
+    <col class="c-fin"><col><col class="c-bdg"><col class="c-pts">
   </colgroup>
   <thead>
     <tr>
@@ -151,7 +156,7 @@
 <span class="tt"> </span>
 <table class="tt-table mt">
   <colgroup>
-    <col class="c-fin"><col class="c-name"><col class="c-bdg"><col class="c-pts">
+    <col class="c-fin"><col><col class="c-bdg"><col class="c-pts">
   </colgroup>
   <thead>
     <tr>
@@ -180,7 +185,7 @@
 <span class="tt"> </span>
 <table class="tt-table mt">
   <colgroup>
-    <col class="c-fin"><col class="c-name"><col class="c-bdg"><col class="c-pts">
+    <col class="c-fin"><col><col class="c-bdg"><col class="c-pts">
   </colgroup>
   <thead>
     <tr>
@@ -215,54 +220,50 @@ function show(id) {
   document.getElementById(id).classList.add('active');
 }
 
-(function drawPoker() {
+const LETTERS = [
+  [[1,1,1,1,0],[1,0,0,0,1],[1,0,0,0,1],[1,1,1,1,0],[1,0,0,0,0],[1,0,0,0,0],[1,0,0,0,0]], // P
+  [[0,1,1,1,0],[1,0,0,0,1],[1,0,0,0,1],[1,0,0,0,1],[1,0,0,0,1],[1,0,0,0,1],[0,1,1,1,0]], // O
+  [[1,0,0,0,1],[1,0,0,1,0],[1,0,1,0,0],[1,1,0,0,0],[1,0,1,0,0],[1,0,0,1,0],[1,0,0,0,1]], // K
+  [[1,1,1,1,1],[1,0,0,0,0],[1,0,0,0,0],[1,1,1,1,0],[1,0,0,0,0],[1,0,0,0,0],[1,1,1,1,1]], // E
+  [[1,1,1,1,0],[1,0,0,0,1],[1,0,0,0,1],[1,1,1,1,0],[1,0,1,0,0],[1,0,0,1,0],[1,0,0,0,1]], // R
+];
+const ROW_COLORS = ['#ff2200','#ff0000','#ee0033','#cc0066','#aa00aa','#cc00cc','#ff00ff'];
+
+function drawPoker() {
   const canvas = document.getElementById('poker-title');
+  if (!canvas) return;
   const ctx = canvas.getContext('2d');
 
-  const DOT  = 18;
-  const GAP  = 4;
-  const CELL = DOT + GAP;
-  const PX   = 20;   // horizontal padding
-  const PY   = 18;   // vertical padding
+  const availW = canvas.parentElement.clientWidth;
+  const COLS = 29, ROWS = 7;
+  const CELL = Math.max(5, Math.floor(availW / COLS));
+  const GAP  = Math.max(1, Math.round(CELL * 0.15));
+  const DOT  = CELL - GAP;
+  const PY   = Math.round(CELL * 0.55);
 
-  const letters = [
-    // P
-    [[1,1,1,1,0],[1,0,0,0,1],[1,0,0,0,1],[1,1,1,1,0],[1,0,0,0,0],[1,0,0,0,0],[1,0,0,0,0]],
-    // O
-    [[0,1,1,1,0],[1,0,0,0,1],[1,0,0,0,1],[1,0,0,0,1],[1,0,0,0,1],[1,0,0,0,1],[0,1,1,1,0]],
-    // K
-    [[1,0,0,0,1],[1,0,0,1,0],[1,0,1,0,0],[1,1,0,0,0],[1,0,1,0,0],[1,0,0,1,0],[1,0,0,0,1]],
-    // E
-    [[1,1,1,1,1],[1,0,0,0,0],[1,0,0,0,0],[1,1,1,1,0],[1,0,0,0,0],[1,0,0,0,0],[1,1,1,1,1]],
-    // R
-    [[1,1,1,1,0],[1,0,0,0,1],[1,0,0,0,1],[1,1,1,1,0],[1,0,1,0,0],[1,0,0,1,0],[1,0,0,0,1]],
-  ];
-
-  const rowColors = ['#ff2200','#ff0000','#ee0033','#cc0066','#aa00aa','#cc00cc','#ff00ff'];
-
-  canvas.width  = 29 * CELL + PX * 2;
-  canvas.height =  7 * CELL + PY * 2;
+  canvas.width  = COLS * CELL;
+  canvas.height = ROWS * CELL + PY * 2;
 
   ctx.fillStyle = '#000';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  const R = DOT * 0.22;
-
-  letters.forEach((letter, li) => {
-    const ox = PX + li * 6 * CELL;
+  const R = Math.max(1, DOT * 0.22);
+  LETTERS.forEach((letter, li) => {
+    const ox = li * 6 * CELL;
     letter.forEach((row, ri) => {
-      ctx.fillStyle = rowColors[ri];
+      ctx.fillStyle = ROW_COLORS[ri];
       row.forEach((on, ci) => {
         if (!on) return;
-        const x = ox + ci * CELL;
-        const y = PY + ri * CELL;
         ctx.beginPath();
-        ctx.roundRect(x, y, DOT, DOT, R);
+        ctx.roundRect(ox + ci * CELL, PY + ri * CELL, DOT, DOT, R);
         ctx.fill();
       });
     });
   });
-})();
+}
+
+drawPoker();
+window.addEventListener('resize', drawPoker);
 </script>
 </body>
 </html>
