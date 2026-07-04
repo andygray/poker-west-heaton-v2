@@ -76,7 +76,7 @@
 <!-- ═══════════════════ STANDINGS ═══════════════════ -->
 <div id="standings" class="page active">
 <span class="tt yellowbg black"> WEST HEATON POKER LEAGUE 2026  100 </span>
-<span class="tt"> </span>
+<canvas id="poker-title" style="display:block"></canvas>
 <span class="tt cyan">       ♠  ♥  2026 SEASON  ♦  ♣       </span>
 <span class="tt"> </span>
 <table class="tt-table st">
@@ -214,6 +214,55 @@ function show(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
+
+(function drawPoker() {
+  const canvas = document.getElementById('poker-title');
+  const ctx = canvas.getContext('2d');
+
+  const DOT  = 18;
+  const GAP  = 4;
+  const CELL = DOT + GAP;
+  const PX   = 20;   // horizontal padding
+  const PY   = 18;   // vertical padding
+
+  const letters = [
+    // P
+    [[1,1,1,1,0],[1,0,0,0,1],[1,0,0,0,1],[1,1,1,1,0],[1,0,0,0,0],[1,0,0,0,0],[1,0,0,0,0]],
+    // O
+    [[0,1,1,1,0],[1,0,0,0,1],[1,0,0,0,1],[1,0,0,0,1],[1,0,0,0,1],[1,0,0,0,1],[0,1,1,1,0]],
+    // K
+    [[1,0,0,0,1],[1,0,0,1,0],[1,0,1,0,0],[1,1,0,0,0],[1,0,1,0,0],[1,0,0,1,0],[1,0,0,0,1]],
+    // E
+    [[1,1,1,1,1],[1,0,0,0,0],[1,0,0,0,0],[1,1,1,1,0],[1,0,0,0,0],[1,0,0,0,0],[1,1,1,1,1]],
+    // R
+    [[1,1,1,1,0],[1,0,0,0,1],[1,0,0,0,1],[1,1,1,1,0],[1,0,1,0,0],[1,0,0,1,0],[1,0,0,0,1]],
+  ];
+
+  const rowColors = ['#ff2200','#ff0000','#ee0033','#cc0066','#aa00aa','#cc00cc','#ff00ff'];
+
+  canvas.width  = 29 * CELL + PX * 2;
+  canvas.height =  7 * CELL + PY * 2;
+
+  ctx.fillStyle = '#000';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  const R = DOT * 0.22;
+
+  letters.forEach((letter, li) => {
+    const ox = PX + li * 6 * CELL;
+    letter.forEach((row, ri) => {
+      ctx.fillStyle = rowColors[ri];
+      row.forEach((on, ci) => {
+        if (!on) return;
+        const x = ox + ci * CELL;
+        const y = PY + ri * CELL;
+        ctx.beginPath();
+        ctx.roundRect(x, y, DOT, DOT, R);
+        ctx.fill();
+      });
+    });
+  });
+})();
 </script>
 </body>
 </html>
