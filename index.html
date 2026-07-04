@@ -52,6 +52,8 @@
     .tt-table td, .tt-table th {
       padding: 0;
       line-height: inherit;
+      white-space: nowrap;
+      overflow: hidden;
     }
     .tt-table thead tr { border-bottom: 2px solid #ffff00; }
     .tt-table tfoot tr { border-top:    2px solid #ffff00; }
@@ -64,18 +66,17 @@
     .mt .c-pts { width: 10%; }
     /* PLAYER gets the remaining 60% */
 
-    /* Standings table: percentage widths */
+    /* Standings table: percentage widths. Single-letter months → 8% each.
+       PLAYER auto = 100 - 8(pos) - 24(months) - 16(total) = 52% */
     .st .c-pos { width:  8%; }
-    .st .c-mo  { width: 12%; }
+    .st .c-mo  { width:  8%; }
     .st .c-tot { width: 16%; }
-    /* PLAYER gets 100 - 8 - 36 - 16 = 40% */
 
-    /* Narrow phones: drop POS column to free space for player names */
+    /* Narrow phones: hide POS (standings) and FINISH (monthly) columns.
+       Explicit class selectors rather than :first-child for reliability. */
     @media (max-width: 479px) {
-      .st .c-pos { width: 0; }
-      .st thead th:first-child,
-      .st tbody td:first-child,
-      .st tfoot td:first-child { display: none; }
+      .st .c-pos, .st th.c-pos, .st td.c-pos { width: 0; display: none; }
+      .mt .c-fin, .mt th.c-fin, .mt td.c-fin { width: 0; display: none; }
     }
 
     /* Pages */
@@ -113,27 +114,27 @@
   </colgroup>
   <thead>
     <tr>
-      <th> POS</th><th> PLAYER</th>
-      <th class="r">MAY</th><th class="r">JUN</th><th class="r">JUL</th><th class="r"> TOTAL</th>
+      <th class="c-pos"> POS</th><th> PLAYER</th>
+      <th class="r">M</th><th class="r">J</th><th class="r">J</th><th class="r"> TOTAL</th>
     </tr>
   </thead>
   <tbody>
-    <tr><td class="yellow"> 1</td><td class="white"> CHLOI</td><td class="green r">19</td><td class="green r">25</td><td class="green r">4</td><td class="yellow r"> 48</td></tr>
-    <tr><td class="yellow"> 2</td><td class="white"> ALEX</td><td class="green r">25</td><td class="green r">6</td><td class="green r">15</td><td class="yellow r"> 46</td></tr>
-    <tr><td class="yellow"> 3</td><td class="white"> KATHY</td><td class="green r">-</td><td class="green r">19</td><td class="green r">25</td><td class="yellow r"> 44</td></tr>
-    <tr><td class="white"> 4</td><td class="white"> IAIN</td><td class="white r">2</td><td class="white r">15</td><td class="white r">20</td><td class="cyan r"> 37</td></tr>
-    <tr><td class="white"> 5</td><td class="white"> LYDIA</td><td class="white r">20</td><td class="white r">-</td><td class="white r">12</td><td class="cyan r"> 32</td></tr>
-    <tr><td class="white"> 6</td><td class="white"> JANE</td><td class="white r">6</td><td class="white r">20</td><td class="white r">-</td><td class="cyan r"> 26</td></tr>
-    <tr><td class="white"> 7</td><td class="white"> ANDY GRAY</td><td class="white r">-</td><td class="white r">2</td><td class="white r">19</td><td class="white r"> 21</td></tr>
-    <tr><td class="white"> 8</td><td class="white"> TOM HEWITT</td><td class="white r">15</td><td class="white r">-</td><td class="white r">-</td><td class="white r"> 15</td></tr>
-    <tr><td class="white"> 9=</td><td class="white"> RAY</td><td class="white r">12</td><td class="white r">-</td><td class="white r">-</td><td class="white r"> 12</td></tr>
-    <tr><td class="white"> 9=</td><td class="white"> KATE</td><td class="white r">-</td><td class="white r">12</td><td class="white r">-</td><td class="white r"> 12</td></tr>
-    <tr><td class="white">11</td><td class="white"> HELEN B</td><td class="white r">4</td><td class="white r">-</td><td class="white r">6</td><td class="white r"> 10</td></tr>
-    <tr><td class="white">12</td><td class="white"> HELEN DOBSON</td><td class="white r">-</td><td class="white r">4</td><td class="white r">-</td><td class="white r"> 4</td></tr>
-    <tr><td class="white">13</td><td class="white"> ZOE</td><td class="white r">-</td><td class="white r">-</td><td class="white r">2</td><td class="white r"> 2</td></tr>
+    <tr><td class="yellow c-pos"> 1</td><td class="white"> CHLOI</td><td class="green r">19</td><td class="green r">25</td><td class="green r">4</td><td class="yellow r"> 48</td></tr>
+    <tr><td class="yellow c-pos"> 2</td><td class="white"> ALEX</td><td class="green r">25</td><td class="green r">6</td><td class="green r">15</td><td class="yellow r"> 46</td></tr>
+    <tr><td class="yellow c-pos"> 3</td><td class="white"> KATHY</td><td class="green r">-</td><td class="green r">19</td><td class="green r">25</td><td class="yellow r"> 44</td></tr>
+    <tr><td class="white c-pos"> 4</td><td class="white"> IAIN</td><td class="white r">2</td><td class="white r">15</td><td class="white r">20</td><td class="cyan r"> 37</td></tr>
+    <tr><td class="white c-pos"> 5</td><td class="white"> LYDIA</td><td class="white r">20</td><td class="white r">-</td><td class="white r">12</td><td class="cyan r"> 32</td></tr>
+    <tr><td class="white c-pos"> 6</td><td class="white"> JANE</td><td class="white r">6</td><td class="white r">20</td><td class="white r">-</td><td class="cyan r"> 26</td></tr>
+    <tr><td class="white c-pos"> 7</td><td class="white"> ANDY GRAY</td><td class="white r">-</td><td class="white r">2</td><td class="white r">19</td><td class="white r"> 21</td></tr>
+    <tr><td class="white c-pos"> 8</td><td class="white"> TOM HEWITT</td><td class="white r">15</td><td class="white r">-</td><td class="white r">-</td><td class="white r"> 15</td></tr>
+    <tr><td class="white c-pos"> 9=</td><td class="white"> RAY</td><td class="white r">12</td><td class="white r">-</td><td class="white r">-</td><td class="white r"> 12</td></tr>
+    <tr><td class="white c-pos"> 9=</td><td class="white"> KATE</td><td class="white r">-</td><td class="white r">12</td><td class="white r">-</td><td class="white r"> 12</td></tr>
+    <tr><td class="white c-pos">11</td><td class="white"> HELEN B</td><td class="white r">4</td><td class="white r">-</td><td class="white r">6</td><td class="white r"> 10</td></tr>
+    <tr><td class="white c-pos">12</td><td class="white"> HELEN DOBSON</td><td class="white r">-</td><td class="white r">4</td><td class="white r">-</td><td class="white r"> 4</td></tr>
+    <tr><td class="white c-pos">13</td><td class="white"> ZOE</td><td class="white r">-</td><td class="white r">-</td><td class="white r">2</td><td class="white r"> 2</td></tr>
   </tbody>
   <tfoot>
-    <tr><td colspan="6"></td></tr>
+    <tr><td class="c-pos"></td><td colspan="5"></td></tr>
   </tfoot>
 </table>
 <span class="tt"> </span>
@@ -154,20 +155,20 @@
   </colgroup>
   <thead>
     <tr>
-      <th>FINISH</th><th> PLAYER</th><th></th><th class="r">PTS</th>
+      <th class="c-fin">FINISH</th><th> PLAYER</th><th></th><th class="r">PTS</th>
     </tr>
   </thead>
   <tbody>
-    <tr><td class="yellow">1ST</td><td class="white"> ALEX</td><td></td><td class="white r">25</td></tr>
-    <tr><td class="cyan">2ND</td><td class="white"> LYDIA</td><td></td><td class="white r">20</td></tr>
-    <tr><td class="white">3RD</td><td class="white"> TOM HEWITT</td><td></td><td class="white r">15</td></tr>
-    <tr><td class="white">4TH</td><td class="white"> RAY</td><td></td><td class="white r">12</td></tr>
-    <tr><td class="white">5TH</td><td class="white"> CHLOI</td><td class="magenta">BUBBLE</td><td class="magenta r">19</td></tr>
-    <tr><td class="white">6TH</td><td class="white"> JANE</td><td></td><td class="white r">6</td></tr>
-    <tr><td class="white">7TH</td><td class="white"> HELEN B</td><td></td><td class="white r">4</td></tr>
-    <tr><td class="white">8TH</td><td class="white"> IAIN</td><td></td><td class="white r">2</td></tr>
+    <tr><td class="yellow c-fin">1ST</td><td class="white"> ALEX</td><td></td><td class="white r">25</td></tr>
+    <tr><td class="cyan c-fin">2ND</td><td class="white"> LYDIA</td><td></td><td class="white r">20</td></tr>
+    <tr><td class="white c-fin">3RD</td><td class="white"> TOM HEWITT</td><td></td><td class="white r">15</td></tr>
+    <tr><td class="white c-fin">4TH</td><td class="white"> RAY</td><td></td><td class="white r">12</td></tr>
+    <tr><td class="white c-fin">5TH</td><td class="white"> CHLOI</td><td class="magenta">BUBBLE</td><td class="magenta r">19</td></tr>
+    <tr><td class="white c-fin">6TH</td><td class="white"> JANE</td><td></td><td class="white r">6</td></tr>
+    <tr><td class="white c-fin">7TH</td><td class="white"> HELEN B</td><td></td><td class="white r">4</td></tr>
+    <tr><td class="white c-fin">8TH</td><td class="white"> IAIN</td><td></td><td class="white r">2</td></tr>
   </tbody>
-  <tfoot><tr><td colspan="4"></td></tr></tfoot>
+  <tfoot><tr><td class="c-fin"></td><td colspan="3"></td></tr></tfoot>
 </table>
 </div>
 
@@ -183,20 +184,20 @@
   </colgroup>
   <thead>
     <tr>
-      <th>FINISH</th><th> PLAYER</th><th></th><th class="r">PTS</th>
+      <th class="c-fin">FINISH</th><th> PLAYER</th><th></th><th class="r">PTS</th>
     </tr>
   </thead>
   <tbody>
-    <tr><td class="yellow">1ST</td><td class="white"> CHLOI</td><td></td><td class="white r">25</td></tr>
-    <tr><td class="cyan">2ND</td><td class="white"> JANE</td><td></td><td class="white r">20</td></tr>
-    <tr><td class="white">3RD</td><td class="white"> IAIN</td><td></td><td class="white r">15</td></tr>
-    <tr><td class="white">4TH</td><td class="white"> KATE</td><td></td><td class="white r">12</td></tr>
-    <tr><td class="white">5TH</td><td class="white"> KATHY</td><td class="magenta">BUBBLE</td><td class="magenta r">19</td></tr>
-    <tr><td class="white">6TH</td><td class="white"> ALEX</td><td></td><td class="white r">6</td></tr>
-    <tr><td class="white">7TH</td><td class="white"> HELEN DOBSON</td><td></td><td class="white r">4</td></tr>
-    <tr><td class="white">8TH</td><td class="white"> ANDY GRAY</td><td></td><td class="white r">2</td></tr>
+    <tr><td class="yellow c-fin">1ST</td><td class="white"> CHLOI</td><td></td><td class="white r">25</td></tr>
+    <tr><td class="cyan c-fin">2ND</td><td class="white"> JANE</td><td></td><td class="white r">20</td></tr>
+    <tr><td class="white c-fin">3RD</td><td class="white"> IAIN</td><td></td><td class="white r">15</td></tr>
+    <tr><td class="white c-fin">4TH</td><td class="white"> KATE</td><td></td><td class="white r">12</td></tr>
+    <tr><td class="white c-fin">5TH</td><td class="white"> KATHY</td><td class="magenta">BUBBLE</td><td class="magenta r">19</td></tr>
+    <tr><td class="white c-fin">6TH</td><td class="white"> ALEX</td><td></td><td class="white r">6</td></tr>
+    <tr><td class="white c-fin">7TH</td><td class="white"> HELEN DOBSON</td><td></td><td class="white r">4</td></tr>
+    <tr><td class="white c-fin">8TH</td><td class="white"> ANDY GRAY</td><td></td><td class="white r">2</td></tr>
   </tbody>
-  <tfoot><tr><td colspan="4"></td></tr></tfoot>
+  <tfoot><tr><td class="c-fin"></td><td colspan="3"></td></tr></tfoot>
 </table>
 </div>
 
@@ -212,20 +213,20 @@
   </colgroup>
   <thead>
     <tr>
-      <th>FINISH</th><th> PLAYER</th><th></th><th class="r">PTS</th>
+      <th class="c-fin">FINISH</th><th> PLAYER</th><th></th><th class="r">PTS</th>
     </tr>
   </thead>
   <tbody>
-    <tr><td class="yellow">1ST</td><td class="white"> KATHY</td><td></td><td class="white r">25</td></tr>
-    <tr><td class="cyan">2ND</td><td class="white"> IAIN</td><td></td><td class="white r">20</td></tr>
-    <tr><td class="white">3RD</td><td class="white"> ALEX</td><td></td><td class="white r">15</td></tr>
-    <tr><td class="white">4TH</td><td class="white"> LYDIA</td><td></td><td class="white r">12</td></tr>
-    <tr><td class="white">5TH</td><td class="white"> ANDY GRAY</td><td class="magenta">BUBBLE</td><td class="magenta r">19</td></tr>
-    <tr><td class="white">6TH</td><td class="white"> HELEN B</td><td></td><td class="white r">6</td></tr>
-    <tr><td class="white">7TH</td><td class="white"> CHLOI</td><td></td><td class="white r">4</td></tr>
-    <tr><td class="white">8TH</td><td class="white"> ZOE</td><td></td><td class="white r">2</td></tr>
+    <tr><td class="yellow c-fin">1ST</td><td class="white"> KATHY</td><td></td><td class="white r">25</td></tr>
+    <tr><td class="cyan c-fin">2ND</td><td class="white"> IAIN</td><td></td><td class="white r">20</td></tr>
+    <tr><td class="white c-fin">3RD</td><td class="white"> ALEX</td><td></td><td class="white r">15</td></tr>
+    <tr><td class="white c-fin">4TH</td><td class="white"> LYDIA</td><td></td><td class="white r">12</td></tr>
+    <tr><td class="white c-fin">5TH</td><td class="white"> ANDY GRAY</td><td class="magenta">BUBBLE</td><td class="magenta r">19</td></tr>
+    <tr><td class="white c-fin">6TH</td><td class="white"> HELEN B</td><td></td><td class="white r">6</td></tr>
+    <tr><td class="white c-fin">7TH</td><td class="white"> CHLOI</td><td></td><td class="white r">4</td></tr>
+    <tr><td class="white c-fin">8TH</td><td class="white"> ZOE</td><td></td><td class="white r">2</td></tr>
   </tbody>
-  <tfoot><tr><td colspan="4"></td></tr></tfoot>
+  <tfoot><tr><td class="c-fin"></td><td colspan="3"></td></tr></tfoot>
 </table>
 </div>
 
