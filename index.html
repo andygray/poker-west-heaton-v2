@@ -7,6 +7,8 @@
   <link rel="stylesheet" href="https://galax.xyz/TELETEXT/TELETEXT.CSS">
   <style>
     html, body { overflow-x: hidden; }
+    html { scrollbar-width: none; }         /* Firefox */
+    html::-webkit-scrollbar { display: none; } /* Chrome / Safari */
 
     /* Mode7 chars are ~0.75× as wide as tall.
        36 chars × 0.75 = 27 → divide content width by 27 to fit the longest header row.
