@@ -70,6 +70,14 @@
     .st .c-tot { width: 16%; }
     /* PLAYER gets 100 - 8 - 36 - 16 = 40% */
 
+    /* Narrow phones: drop POS column to free space for player names */
+    @media (max-width: 479px) {
+      .st .c-pos { width: 0; }
+      .st thead th:first-child,
+      .st tbody td:first-child,
+      .st tfoot td:first-child { display: none; }
+    }
+
     /* Pages */
     .page { display: none; }
     .page.active { display: block; padding-bottom: 1em; }
@@ -129,8 +137,9 @@
   </tfoot>
 </table>
 <span class="tt"> </span>
-<span class="tt cyan"> POINTS: 1ST=25 2ND=20 3RD=15 4TH=12</span>
-<span class="tt"><span class="cyan"> 5TH=</span><span class="magenta">19</span><span class="cyan"> (BUBBLE 9+10) 6TH=6 7TH=4 8TH=2</span></span>
+<span class="tt cyan"> 1ST=25 2ND=20 3RD=15 4TH=12</span>
+<span class="tt"><span class="cyan"> 5TH=</span><span class="magenta">19</span><span class="cyan">(BUBBLE 9+10) 6TH=6</span></span>
+<span class="tt cyan"> 7TH=4 8TH=2</span>
 </div>
 
 <!-- ═══════════════════ MAY ═══════════════════ -->
@@ -241,7 +250,7 @@ const LETTERS = [
   [[1,1,1,1,1],[1,0,0,0,0],[1,0,0,0,0],[1,1,1,1,0],[1,0,0,0,0],[1,0,0,0,0],[1,1,1,1,1]], // E
   [[1,1,1,1,0],[1,0,0,0,1],[1,0,0,0,1],[1,1,1,1,0],[1,0,1,0,0],[1,0,0,1,0],[1,0,0,0,1]], // R
 ];
-const ROW_COLORS = ['#ff2200','#ff0000','#ee0033','#cc0066','#aa00aa','#cc00cc','#ff00ff'];
+const ROW_COLORS = ['#ffff00','#ffee00','#ffcc00','#0099ff','#0066ff','#0033ff','#0000ff'];
 
 function drawPoker() {
   const canvas = document.getElementById('poker-title');
