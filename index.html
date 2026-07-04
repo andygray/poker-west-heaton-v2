@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>West Heaton Poker League 2026</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --border: #2a2d3e;
+      --gold: #f0b429;
+      --gold-dim: #a07820;
+      --text: #e8eaf0;
+      --muted: #6b7280;
+      --bubble: #3b82f6;
+      --green: #22c55e;
+      --radius: 10px;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 2rem 1rem 4rem;
+    }
+
+    .container { max-width: 860px; margin: 0 auto; }
+
+    /* Header */
+    header { text-align: center; margin-bottom: 3rem; }
+    header .suit { font-size: 1.5rem; letter-spacing: 0.5rem; color: var(--gold); margin-bottom: 0.75rem; }
+    header h1 { font-size: clamp(1.6rem, 5vw, 2.4rem); font-weight: 700; letter-spacing: -0.02em; }
+    header h1 span { color: var(--gold); }
+    header p { color: var(--muted); margin-top: 0.4rem; font-size: 0.9rem; }
+
+    /* Section */
+    section { margin-bottom: 2.5rem; }
+    h2 {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* Podium */
+    .podium {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr 1fr;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+      align-items: end;
+    }
+    .podium-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1rem;
+      text-align: center;
+    }
+    .podium-card.first {
+      border-color: var(--gold);
+      background: linear-gradient(160deg, #1e1a0f 0%, #1a1d27 100%);
+    }
+    .podium-card .rank { font-size: 1.4rem; margin-bottom: 0.25rem; }
+    .podium-card .name { font-weight: 700; font-size: 1rem; }
+    .podium-card .pts { color: var(--gold); font-size: 1.5rem; font-weight: 700; margin-top: 0.25rem; }
+    .podium-card.first .pts { font-size: 1.8rem; }
+    .podium-card .pts-label { font-size: 0.7rem; color: var(--muted); }
+
+    /* Tables */
+    .table-wrap { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); }
+    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    th {
+      background: var(--surface);
+      color: var(--muted);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.6rem 1rem;
+      text-align: left;
+    }
+    td { padding: 0.65rem 1rem; border-top: 1px solid var(--border); }
+    tr:hover td { background: #ffffff08; }
+    .num { text-align: right; font-variant-numeric: tabular-nums; }
+    .muted { color: var(--muted); }
+    .bold { font-weight: 700; }
+    .gold { color: var(--gold); font-weight: 700; }
+    .pos-cell { color: var(--muted); width: 2.5rem; }
+
+    /* Bubble badge */
+    .bubble-badge {
+      display: inline-block;
+      background: var(--bubble);
+      color: #fff;
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      padding: 0.1rem 0.4rem;
+      border-radius: 4px;
+      vertical-align: middle;
+      margin-left: 0.3rem;
+    }
+
+    /* Month tabs */
+    .tabs { display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap; }
+    .tab {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.4rem 1rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--muted);
+      transition: all 0.15s;
+    }
+    .tab.active, .tab:hover { border-color: var(--gold); color: var(--gold); }
+
+    .month-table { display: none; }
+    .month-table.active { display: block; }
+
+    /* Points pills */
+    .points-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: 0.5rem;
+    }
+    .points-pill {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.6rem 0.75rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+    }
+    .points-pill .pos-label { color: var(--muted); }
+    .points-pill .pts-val { font-weight: 700; color: var(--gold); }
+    .points-pill.is-bubble { border-color: var(--bubble); }
+    .points-pill.is-bubble .pos-label { color: #93c5fd; }
+
+    footer { text-align: center; color: var(--muted); font-size: 0.75rem; margin-top: 3rem; }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="suit">♠ ♥ ♣ ♦</div>
+    <h1>West Heaton <span>Poker League</span></h1>
+    <p>2026 Season &nbsp;·&nbsp; May – July</p>
+  </header>
+
+  <!-- LEADERBOARD -->
+  <section>
+    <h2>Standings</h2>
+
+    <div class="podium">
+      <div class="podium-card">
+        <div class="rank">🥈</div>
+        <div class="name">Alex</div>
+        <div class="pts">46</div>
+        <div class="pts-label">points</div>
+      </div>
+      <div class="podium-card first">
+        <div class="rank">🏆</div>
+        <div class="name">Chloi</div>
+        <div class="pts">48</div>
+        <div class="pts-label">points</div>
+      </div>
+      <div class="podium-card">
+        <div class="rank">🥉</div>
+        <div class="name">Kathy</div>
+        <div class="pts">44</div>
+        <div class="pts-label">points</div>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Pos</th>
+            <th>Player</th>
+            <th class="num">May</th>
+            <th class="num">Jun</th>
+            <th class="num">Jul</th>
+            <th class="num">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="pos-cell">1</td><td class="bold">Chloi</td><td class="num">19</td><td class="num">25</td><td class="num">4</td><td class="num gold">48</td></tr>
+          <tr><td class="pos-cell">2</td><td class="bold">Alex</td><td class="num">25</td><td class="num">6</td><td class="num">15</td><td class="num gold">46</td></tr>
+          <tr><td class="pos-cell">3</td><td class="bold">Kathy</td><td class="num muted">–</td><td class="num">19</td><td class="num">25</td><td class="num gold">44</td></tr>
+          <tr><td class="pos-cell">4</td><td>Iain</td><td class="num">2</td><td class="num">15</td><td class="num">20</td><td class="num bold">37</td></tr>
+          <tr><td class="pos-cell">5</td><td>Lydia</td><td class="num">20</td><td class="num muted">–</td><td class="num">12</td><td class="num bold">32</td></tr>
+          <tr><td class="pos-cell">6</td><td>Jane</td><td class="num">6</td><td class="num">20</td><td class="num muted">–</td><td class="num bold">26</td></tr>
+          <tr><td class="pos-cell">7</td><td>Andy Gray</td><td class="num muted">–</td><td class="num">2</td><td class="num">19</td><td class="num bold">21</td></tr>
+          <tr><td class="pos-cell">8</td><td>Tom Hewitt</td><td class="num">15</td><td class="num muted">–</td><td class="num muted">–</td><td class="num bold">15</td></tr>
+          <tr><td class="pos-cell">9=</td><td>Ray</td><td class="num">12</td><td class="num muted">–</td><td class="num muted">–</td><td class="num bold">12</td></tr>
+          <tr><td class="pos-cell">9=</td><td>Kate</td><td class="num muted">–</td><td class="num">12</td><td class="num muted">–</td><td class="num bold">12</td></tr>
+          <tr><td class="pos-cell">11</td><td>Helen B</td><td class="num">4</td><td class="num muted">–</td><td class="num">6</td><td class="num bold">10</td></tr>
+          <tr><td class="pos-cell">12</td><td>Helen Dobson</td><td class="num muted">–</td><td class="num">4</td><td class="num muted">–</td><td class="num bold">4</td></tr>
+          <tr><td class="pos-cell">13</td><td>Zoe</td><td class="num muted">–</td><td class="num muted">–</td><td class="num">2</td><td class="num bold">2</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- MONTHLY RESULTS -->
+  <section>
+    <h2>Monthly Results</h2>
+    <div class="tabs">
+      <div class="tab active" onclick="showMonth('may', this)">May</div>
+      <div class="tab" onclick="showMonth('june', this)">June</div>
+      <div class="tab" onclick="showMonth('july', this)">July</div>
+    </div>
+
+    <div id="may" class="month-table active table-wrap">
+      <table>
+        <thead><tr><th>Finish</th><th>Player</th><th class="num">Points</th></tr></thead>
+        <tbody>
+          <tr><td>1st</td><td>Alex</td><td class="num">25</td></tr>
+          <tr><td>2nd</td><td>Lydia</td><td class="num">20</td></tr>
+          <tr><td>3rd</td><td>Tom Hewitt</td><td class="num">15</td></tr>
+          <tr><td>4th</td><td>Ray</td><td class="num">12</td></tr>
+          <tr><td>5th</td><td>Chloi <span class="bubble-badge">BUBBLE</span></td><td class="num">19</td></tr>
+          <tr><td>6th</td><td>Jane</td><td class="num">6</td></tr>
+          <tr><td>7th</td><td>Helen B</td><td class="num">4</td></tr>
+          <tr><td>8th</td><td>Iain</td><td class="num">2</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div id="june" class="month-table table-wrap">
+      <table>
+        <thead><tr><th>Finish</th><th>Player</th><th class="num">Points</th></tr></thead>
+        <tbody>
+          <tr><td>1st</td><td>Chloi</td><td class="num">25</td></tr>
+          <tr><td>2nd</td><td>Jane</td><td class="num">20</td></tr>
+          <tr><td>3rd</td><td>Iain</td><td class="num">15</td></tr>
+          <tr><td>4th</td><td>Kate</td><td class="num">12</td></tr>
+          <tr><td>5th</td><td>Kathy <span class="bubble-badge">BUBBLE</span></td><td class="num">19</td></tr>
+          <tr><td>6th</td><td>Alex</td><td class="num">6</td></tr>
+          <tr><td>7th</td><td>Helen Dobson</td><td class="num">4</td></tr>
+          <tr><td>8th</td><td>Andy Gray</td><td class="num">2</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div id="july" class="month-table table-wrap">
+      <table>
+        <thead><tr><th>Finish</th><th>Player</th><th class="num">Points</th></tr></thead>
+        <tbody>
+          <tr><td>1st</td><td>Kathy</td><td class="num">25</td></tr>
+          <tr><td>2nd</td><td>Iain</td><td class="num">20</td></tr>
+          <tr><td>3rd</td><td>Alex</td><td class="num">15</td></tr>
+          <tr><td>4th</td><td>Lydia</td><td class="num">12</td></tr>
+          <tr><td>5th</td><td>Andy Gray <span class="bubble-badge">BUBBLE</span></td><td class="num">19</td></tr>
+          <tr><td>6th</td><td>Helen B</td><td class="num">6</td></tr>
+          <tr><td>7th</td><td>Chloi</td><td class="num">4</td></tr>
+          <tr><td>8th</td><td>Zoe</td><td class="num">2</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- POINTS SYSTEM -->
+  <section>
+    <h2>Points System</h2>
+    <div class="points-grid">
+      <div class="points-pill"><span class="pos-label">1st</span><span class="pts-val">25</span></div>
+      <div class="points-pill"><span class="pos-label">2nd</span><span class="pts-val">20</span></div>
+      <div class="points-pill"><span class="pos-label">3rd</span><span class="pts-val">15</span></div>
+      <div class="points-pill"><span class="pos-label">4th</span><span class="pts-val">12</span></div>
+      <div class="points-pill is-bubble"><span class="pos-label">5th 🫧</span><span class="pts-val">19</span></div>
+      <div class="points-pill"><span class="pos-label">6th</span><span class="pts-val">6</span></div>
+      <div class="points-pill"><span class="pos-label">7th</span><span class="pts-val">4</span></div>
+      <div class="points-pill"><span class="pos-label">8th</span><span class="pts-val">2</span></div>
+    </div>
+    <p style="margin-top:0.75rem; font-size:0.78rem; color:var(--muted);">
+      5th place is the bubble — last out before the money. Base 9 pts + 10 bonus = 19 total.
+    </p>
+  </section>
+
+  <footer>West Heaton Poker League &nbsp;·&nbsp; 2026</footer>
+
+</div>
+
+<script>
+  function showMonth(id, tab) {
+    document.querySelectorAll('.month-table').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    tab.classList.add('active');
+  }
+</script>
+</body>
+</html>
