@@ -8,43 +8,110 @@
   <style>
     body { padding: 20px; }
 
-    .tt { display: block; white-space: pre; font-family: Mode7, monospace; font-size: 20px; line-height: 20px; }
+    .tt {
+      display: block;
+      white-space: pre;
+      font-family: Mode7, monospace;
+      font-size: 20px;
+      line-height: 20px;
+      font-smooth: never;
+      -webkit-font-smoothing: none;
+    }
 
+    /* Data tables */
+    .tt-table {
+      border-collapse: collapse;
+      font-family: Mode7, monospace;
+      font-size: 20px;
+      line-height: 20px;
+      table-layout: fixed;
+      font-smooth: never;
+      -webkit-font-smoothing: none;
+    }
+    .tt-table td, .tt-table th {
+      padding: 0;
+      line-height: 20px;
+    }
+    .tt-table thead tr { border-bottom: 2px solid #ffff00; }
+    .tt-table tfoot tr { border-top:    2px solid #ffff00; }
+    .tt-table th { text-align: left; color: #fff; padding-bottom: 2px; }
+    .r  { text-align: right; }
+
+    /* Monthly table column widths */
+    .mt { width: 52ch; }          /* overall table */
+    .mt .c-fin  { width:  8ch; }
+    .mt .c-name { width: 22ch; }
+    .mt .c-bdg  { width:  8ch; }
+    .mt .c-pts  { width:  4ch; }
+
+    /* Standings table column widths */
+    .st { width: 44ch; }
+    .st .c-pos  { width:  4ch; }
+    .st .c-name { width: 16ch; }
+    .st .c-mo   { width:  5ch; }
+    .st .c-tot  { width:  6ch; }
+
+    /* Pages */
     .page { display: none; }
     .page.active { display: block; }
 
-    .nav { display: flex; margin-top: 2px; cursor: pointer; }
-    .nav-btn { font-family: Mode7, monospace; font-size: 20px; line-height: 20px; padding: 0 0; flex: 1; text-align: center; display: block; color: #000 !important; }
+    /* Nav */
+    .nav { display: flex; margin-top: 2px; }
+    .nav-btn {
+      font-family: Mode7, monospace;
+      font-size: 20px;
+      line-height: 20px;
+      flex: 1;
+      text-align: center;
+      cursor: pointer;
+      color: #000 !important;
+      display: block;
+      user-select: none;
+    }
     .nav-btn:hover { opacity: 0.85; }
   </style>
 </head>
 <body>
 
-<!-- ═══════════════════ STANDINGS (default page) ═══════════════════ -->
+<!-- ═══════════════════ STANDINGS ═══════════════════ -->
 <div id="standings" class="page active">
 <span class="tt yellowbg black"> WEST HEATON POKER LEAGUE 2026  100 </span>
 <span class="tt"> </span>
 <span class="tt cyan">       ♠  ♥  2026 SEASON  ♦  ♣       </span>
 <span class="tt"> </span>
-<span class="tt white"> STANDINGS       MAY  JUN  JUL TOTAL </span>
-<span class="tt yellow"> ─────────────────────────────────── </span>
-<span class="tt"><span class="yellow"> 1  </span><span class="white">CHLOI            19   25    4  </span><span class="yellow"> 48 </span></span>
-<span class="tt"><span class="yellow"> 2  </span><span class="white">ALEX             25    6   15  </span><span class="yellow"> 46 </span></span>
-<span class="tt"><span class="yellow"> 3  </span><span class="white">KATHY             -   19   25  </span><span class="yellow"> 44 </span></span>
-<span class="tt white"> 4  IAIN              2   15   20   37 </span>
-<span class="tt white"> 5  LYDIA            20    -   12   32 </span>
-<span class="tt white"> 6  JANE              6   20    -   26 </span>
-<span class="tt white"> 7  ANDY GRAY         -    2   19   21 </span>
-<span class="tt white"> 8  TOM HEWITT       15    -    -   15 </span>
-<span class="tt white"> 9= RAY              12    -    -   12 </span>
-<span class="tt white"> 9= KATE              -   12    -   12 </span>
-<span class="tt white">11  HELEN B           4    -    6   10 </span>
-<span class="tt white">12  HELEN DOBSON      -    4    -    4 </span>
-<span class="tt white">13  ZOE               -    -    2    2 </span>
-<span class="tt yellow"> ─────────────────────────────────── </span>
+<table class="tt-table st">
+  <colgroup>
+    <col class="c-pos"><col class="c-name">
+    <col class="c-mo"><col class="c-mo"><col class="c-mo"><col class="c-tot">
+  </colgroup>
+  <thead>
+    <tr>
+      <th> POS</th><th> PLAYER</th>
+      <th class="r">MAY</th><th class="r">JUN</th><th class="r">JUL</th><th class="r"> TOTAL</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td class="yellow"> 1</td><td class="white"> CHLOI</td><td class="green r">19</td><td class="green r">25</td><td class="green r">4</td><td class="yellow r"> 48</td></tr>
+    <tr><td class="yellow"> 2</td><td class="white"> ALEX</td><td class="green r">25</td><td class="green r">6</td><td class="green r">15</td><td class="yellow r"> 46</td></tr>
+    <tr><td class="yellow"> 3</td><td class="white"> KATHY</td><td class="green r">-</td><td class="green r">19</td><td class="green r">25</td><td class="yellow r"> 44</td></tr>
+    <tr><td class="white"> 4</td><td class="white"> IAIN</td><td class="white r">2</td><td class="white r">15</td><td class="white r">20</td><td class="cyan r"> 37</td></tr>
+    <tr><td class="white"> 5</td><td class="white"> LYDIA</td><td class="white r">20</td><td class="white r">-</td><td class="white r">12</td><td class="cyan r"> 32</td></tr>
+    <tr><td class="white"> 6</td><td class="white"> JANE</td><td class="white r">6</td><td class="white r">20</td><td class="white r">-</td><td class="cyan r"> 26</td></tr>
+    <tr><td class="white"> 7</td><td class="white"> ANDY GRAY</td><td class="white r">-</td><td class="white r">2</td><td class="white r">19</td><td class="white r"> 21</td></tr>
+    <tr><td class="white"> 8</td><td class="white"> TOM HEWITT</td><td class="white r">15</td><td class="white r">-</td><td class="white r">-</td><td class="white r"> 15</td></tr>
+    <tr><td class="white"> 9=</td><td class="white"> RAY</td><td class="white r">12</td><td class="white r">-</td><td class="white r">-</td><td class="white r"> 12</td></tr>
+    <tr><td class="white"> 9=</td><td class="white"> KATE</td><td class="white r">-</td><td class="white r">12</td><td class="white r">-</td><td class="white r"> 12</td></tr>
+    <tr><td class="white">11</td><td class="white"> HELEN B</td><td class="white r">4</td><td class="white r">-</td><td class="white r">6</td><td class="white r"> 10</td></tr>
+    <tr><td class="white">12</td><td class="white"> HELEN DOBSON</td><td class="white r">-</td><td class="white r">4</td><td class="white r">-</td><td class="white r"> 4</td></tr>
+    <tr><td class="white">13</td><td class="white"> ZOE</td><td class="white r">-</td><td class="white r">-</td><td class="white r">2</td><td class="white r"> 2</td></tr>
+  </tbody>
+  <tfoot>
+    <tr><td colspan="6"></td></tr>
+  </tfoot>
+</table>
 <span class="tt"> </span>
-<span class="tt cyan"> POINTS: 1ST=25 2ND=20 3RD=15 4TH=12 </span>
-<span class="tt"><span class="cyan"> 5TH=</span><span class="magenta">19</span><span class="cyan"> (BUBBLE: 9+10) 6TH=6 7TH=4 8TH=2 </span></span>
+<span class="tt cyan"> POINTS: 1ST=25 2ND=20 3RD=15 4TH=12</span>
+<span class="tt"><span class="cyan"> 5TH=</span><span class="magenta">19</span><span class="cyan"> (BUBBLE 9+10) 6TH=6 7TH=4 8TH=2</span></span>
 </div>
 
 <!-- ═══════════════════ MAY ═══════════════════ -->
@@ -53,17 +120,27 @@
 <span class="tt"> </span>
 <span class="tt cyan">         ♠  MAY 2026  ♠              </span>
 <span class="tt"> </span>
-<span class="tt white"> FINISH   PLAYER              POINTS </span>
-<span class="tt yellow"> ─────────────────────────────────── </span>
-<span class="tt"><span class="yellow"> 1ST  </span><span class="white">    ALEX                      25 </span></span>
-<span class="tt"><span class="cyan">  2ND  </span><span class="white">    LYDIA                     20 </span></span>
-<span class="tt white">  3RD      TOM HEWITT               15 </span>
-<span class="tt white">  4TH      RAY                      12 </span>
-<span class="tt"><span class="white">  5TH      CHLOI          </span><span class="magenta">BUBBLE</span><span class="white">  </span><span class="magenta"> 19 </span></span>
-<span class="tt white">  6TH      JANE                      6 </span>
-<span class="tt white">  7TH      HELEN B                   4 </span>
-<span class="tt white">  8TH      IAIN                      2 </span>
-<span class="tt yellow"> ─────────────────────────────────── </span>
+<table class="tt-table mt">
+  <colgroup>
+    <col class="c-fin"><col class="c-name"><col class="c-bdg"><col class="c-pts">
+  </colgroup>
+  <thead>
+    <tr>
+      <th>FINISH</th><th> PLAYER</th><th></th><th class="r">PTS</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td class="yellow">1ST</td><td class="white"> ALEX</td><td></td><td class="white r">25</td></tr>
+    <tr><td class="cyan">2ND</td><td class="white"> LYDIA</td><td></td><td class="white r">20</td></tr>
+    <tr><td class="white">3RD</td><td class="white"> TOM HEWITT</td><td></td><td class="white r">15</td></tr>
+    <tr><td class="white">4TH</td><td class="white"> RAY</td><td></td><td class="white r">12</td></tr>
+    <tr><td class="white">5TH</td><td class="white"> CHLOI</td><td class="magenta">BUBBLE</td><td class="magenta r">19</td></tr>
+    <tr><td class="white">6TH</td><td class="white"> JANE</td><td></td><td class="white r">6</td></tr>
+    <tr><td class="white">7TH</td><td class="white"> HELEN B</td><td></td><td class="white r">4</td></tr>
+    <tr><td class="white">8TH</td><td class="white"> IAIN</td><td></td><td class="white r">2</td></tr>
+  </tbody>
+  <tfoot><tr><td colspan="4"></td></tr></tfoot>
+</table>
 </div>
 
 <!-- ═══════════════════ JUNE ═══════════════════ -->
@@ -72,17 +149,27 @@
 <span class="tt"> </span>
 <span class="tt cyan">         ♥  JUNE 2026  ♥             </span>
 <span class="tt"> </span>
-<span class="tt white"> FINISH   PLAYER              POINTS </span>
-<span class="tt yellow"> ─────────────────────────────────── </span>
-<span class="tt"><span class="yellow"> 1ST  </span><span class="white">    CHLOI                     25 </span></span>
-<span class="tt"><span class="cyan">  2ND  </span><span class="white">    JANE                      20 </span></span>
-<span class="tt white">  3RD      IAIN                      15 </span>
-<span class="tt white">  4TH      KATE                      12 </span>
-<span class="tt"><span class="white">  5TH      KATHY          </span><span class="magenta">BUBBLE</span><span class="white">  </span><span class="magenta"> 19 </span></span>
-<span class="tt white">  6TH      ALEX                       6 </span>
-<span class="tt white">  7TH      HELEN DOBSON               4 </span>
-<span class="tt white">  8TH      ANDY GRAY                  2 </span>
-<span class="tt yellow"> ─────────────────────────────────── </span>
+<table class="tt-table mt">
+  <colgroup>
+    <col class="c-fin"><col class="c-name"><col class="c-bdg"><col class="c-pts">
+  </colgroup>
+  <thead>
+    <tr>
+      <th>FINISH</th><th> PLAYER</th><th></th><th class="r">PTS</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td class="yellow">1ST</td><td class="white"> CHLOI</td><td></td><td class="white r">25</td></tr>
+    <tr><td class="cyan">2ND</td><td class="white"> JANE</td><td></td><td class="white r">20</td></tr>
+    <tr><td class="white">3RD</td><td class="white"> IAIN</td><td></td><td class="white r">15</td></tr>
+    <tr><td class="white">4TH</td><td class="white"> KATE</td><td></td><td class="white r">12</td></tr>
+    <tr><td class="white">5TH</td><td class="white"> KATHY</td><td class="magenta">BUBBLE</td><td class="magenta r">19</td></tr>
+    <tr><td class="white">6TH</td><td class="white"> ALEX</td><td></td><td class="white r">6</td></tr>
+    <tr><td class="white">7TH</td><td class="white"> HELEN DOBSON</td><td></td><td class="white r">4</td></tr>
+    <tr><td class="white">8TH</td><td class="white"> ANDY GRAY</td><td></td><td class="white r">2</td></tr>
+  </tbody>
+  <tfoot><tr><td colspan="4"></td></tr></tfoot>
+</table>
 </div>
 
 <!-- ═══════════════════ JULY ═══════════════════ -->
@@ -91,20 +178,30 @@
 <span class="tt"> </span>
 <span class="tt cyan">         ♦  JULY 2026  ♦             </span>
 <span class="tt"> </span>
-<span class="tt white"> FINISH   PLAYER              POINTS </span>
-<span class="tt yellow"> ─────────────────────────────────── </span>
-<span class="tt"><span class="yellow"> 1ST  </span><span class="white">    KATHY                     25 </span></span>
-<span class="tt"><span class="cyan">  2ND  </span><span class="white">    IAIN                      20 </span></span>
-<span class="tt white">  3RD      ALEX                      15 </span>
-<span class="tt white">  4TH      LYDIA                     12 </span>
-<span class="tt"><span class="white">  5TH      ANDY GRAY      </span><span class="magenta">BUBBLE</span><span class="white">  </span><span class="magenta"> 19 </span></span>
-<span class="tt white">  6TH      HELEN B                    6 </span>
-<span class="tt white">  7TH      CHLOI                      4 </span>
-<span class="tt white">  8TH      ZOE                        2 </span>
-<span class="tt yellow"> ─────────────────────────────────── </span>
+<table class="tt-table mt">
+  <colgroup>
+    <col class="c-fin"><col class="c-name"><col class="c-bdg"><col class="c-pts">
+  </colgroup>
+  <thead>
+    <tr>
+      <th>FINISH</th><th> PLAYER</th><th></th><th class="r">PTS</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td class="yellow">1ST</td><td class="white"> KATHY</td><td></td><td class="white r">25</td></tr>
+    <tr><td class="cyan">2ND</td><td class="white"> IAIN</td><td></td><td class="white r">20</td></tr>
+    <tr><td class="white">3RD</td><td class="white"> ALEX</td><td></td><td class="white r">15</td></tr>
+    <tr><td class="white">4TH</td><td class="white"> LYDIA</td><td></td><td class="white r">12</td></tr>
+    <tr><td class="white">5TH</td><td class="white"> ANDY GRAY</td><td class="magenta">BUBBLE</td><td class="magenta r">19</td></tr>
+    <tr><td class="white">6TH</td><td class="white"> HELEN B</td><td></td><td class="white r">6</td></tr>
+    <tr><td class="white">7TH</td><td class="white"> CHLOI</td><td></td><td class="white r">4</td></tr>
+    <tr><td class="white">8TH</td><td class="white"> ZOE</td><td></td><td class="white r">2</td></tr>
+  </tbody>
+  <tfoot><tr><td colspan="4"></td></tr></tfoot>
+</table>
 </div>
 
-<!-- ═══════════════════ NAV BAR ═══════════════════ -->
+<!-- ═══════════════════ NAV ═══════════════════ -->
 <div class="nav">
   <a class="nav-btn redbg"    onclick="show('standings')">TABLE</a>
   <a class="nav-btn greenbg"  onclick="show('may')">MAY</a>
